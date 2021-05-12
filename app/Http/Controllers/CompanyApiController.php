@@ -2,62 +2,66 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CompanyStoreRequest;
+use App\Http\Resources\CompanyResource;
+use App\Models\Company;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Response;
 
 class CompanyApiController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return AnonymousResourceCollection
      */
-    public function index()
+    public function index(): AnonymousResourceCollection
     {
-        //
+        $companies = Company::paginate();
+        return CompanyResource::collection($companies);
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CompanyStoreRequest $request
+     * @return CompanyResource
      */
-    public function store(Request $request)
+    public function store(CompanyStoreRequest $request): CompanyResource
     {
-        //
+        $company = Company::create($request->validated());
+
+        return new CompanyResource($company);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Company $company
+     * @return CompanyResource
      */
-    public function show($id)
+    public function show(Company $company): CompanyResource
     {
-        //
+        return new CompanyResource($company);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param CompanyStoreRequest $request
+     * @param Company $company
+     * @return CompanyResource
      */
-    public function update(Request $request, $id)
+    public function update(CompanyStoreRequest $request, Company $company): CompanyResource
     {
-        //
+        $company->update($request->validated());
+        return new CompanyResource($company);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Company $company
+     * @return JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Company $company): JsonResponse
     {
-        //
+        $company->delete();
+        return response()->json(['message' => 'deleted OK', 'company' => new CompanyResource($company)]);
     }
 }
