@@ -17,13 +17,14 @@ class CreateEmployeesTable extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->unsignedBigInteger('company');
+            $table->unsignedBigInteger('company_id');
             $table->string('email');
             $table->string('phone');
 
-            $table->foreign('company')
+            $table->foreign('company_id')
                 ->references('id')
-                ->on('companies');
+                ->on('companies')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }
