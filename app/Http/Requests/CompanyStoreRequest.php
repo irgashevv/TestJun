@@ -7,8 +7,6 @@ use Illuminate\Foundation\Http\FormRequest;
 class CompanyStoreRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
      * @return bool
      */
     public function authorize()
@@ -17,16 +15,14 @@ class CompanyStoreRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array
+     * @return string[]
      */
     public function rules()
     {
         return [
             'name' => 'required|string|min:4',
             'email' => 'required|string|email',
-            'logo' => 'nullable',
+            'logo' => 'file',
             'website' => 'string',
         ];
     }

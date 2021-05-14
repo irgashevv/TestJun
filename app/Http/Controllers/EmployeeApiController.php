@@ -7,9 +7,7 @@ use App\Http\Requests\EmployeeUpdateRequest;
 use App\Http\Resources\EmployeeResource;
 use App\Models\Employee;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
 class EmployeeApiController extends Controller
 {
@@ -18,7 +16,7 @@ class EmployeeApiController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $employees = Employee::paginate();
+        $employees = Employee::paginate(10);
         return EmployeeResource::collection($employees);
     }
 
@@ -50,7 +48,6 @@ class EmployeeApiController extends Controller
     public function update(EmployeeUpdateRequest $request, Employee $employee): EmployeeResource
     {
         $employee->update($request->validated());
-
         return new EmployeeResource($employee);
     }
 

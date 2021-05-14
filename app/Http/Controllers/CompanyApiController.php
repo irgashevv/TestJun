@@ -7,7 +7,6 @@ use App\Http\Resources\CompanyResource;
 use App\Models\Company;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
 class CompanyApiController extends Controller
 {
@@ -16,7 +15,7 @@ class CompanyApiController extends Controller
      */
     public function index(): AnonymousResourceCollection
     {
-        $companies = Company::paginate();
+        $companies = Company::paginate(10);
         return CompanyResource::collection($companies);
     }
 
@@ -27,13 +26,10 @@ class CompanyApiController extends Controller
     public function store(CompanyStoreRequest $request): CompanyResource
     {
         $company = Company::create($request->validated());
-
         return new CompanyResource($company);
     }
 
     /**
-     * Display the specified resource.
-     *
      * @param Company $company
      * @return CompanyResource
      */
@@ -43,8 +39,6 @@ class CompanyApiController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
      * @param CompanyStoreRequest $request
      * @param Company $company
      * @return CompanyResource
